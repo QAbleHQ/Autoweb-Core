@@ -1,6 +1,3 @@
-package main.java;
-
-
 import org.openqa.selenium.WebDriver;
 
 public class Browser {
