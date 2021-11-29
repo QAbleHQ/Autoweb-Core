@@ -7,13 +7,21 @@ import org.openqa.selenium.WebElement;
 
 public class FindElement {
 
-    public WebElement find(WebDriver driver, JSONObject object) {
+    WebDriver driver;
 
-        String locator_type = object.get("locator_type").toString();
-        String locator_value = object.get("locator_value").toString();
+    public FindElement(WebDriver dri) {
+        this.driver = dri;
+    }
+
+    public WebElement find(WebDriver driver, String locator_value) {
+
         WebElement element = null;
-        if (locator_type.equalsIgnoreCase("xpath")) {
-            element = driver.findElement(By.xpath(locator_value));
+        String[] locator_to_find = locator_value.split(":");
+
+        System.out.println(locator_to_find);
+        System.out.println(locator_to_find[1]);
+        if (locator_value.contains("xpath")) {
+            element = driver.findElement(By.xpath(locator_to_find[1]));
         }
         return element;
     }
