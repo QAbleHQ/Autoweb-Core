@@ -1,6 +1,10 @@
 package io.unity.autoweb;
 
-import org.openqa.selenium.WebDriver;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Browser {
     WebDriver driver;
@@ -31,7 +35,7 @@ public class Browser {
     }
 
     public void navigate_to_back() {
-         driver.navigate().back();
+        driver.navigate().back();
     }
 
     public void navigate_to_forward() {
@@ -41,12 +45,36 @@ public class Browser {
     public void refresh_page() {
         driver.navigate().refresh();
     }
+
     public void click(String elementName) {
         element.find(driver, elementName).click();
     }
 
     public void enter_text(String element_name, String text_to_enter) {
         element.find(driver, element_name).sendKeys(text_to_enter);
+    }
+
+    public void close_browser() {
+        driver.quit();
+    }
+
+    public void take_page_screenshot(String image_name) {
+        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(scrFile, new File("./" + image_name + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void take_element_screen_shot(WebElement element, String image_name) {
+        File scrFile = element.getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(scrFile, new File("./" + image_name + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
