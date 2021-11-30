@@ -18,7 +18,7 @@ public class Verify {
     public boolean element_is_present(String element_name) {
         boolean bool = false;
         try {
-            if (element.find(driver, element_name).isDisplayed()) {
+            if (element.find(element_name).isDisplayed()) {
                 bool = true;
             }
         } catch (Exception e) {
@@ -30,7 +30,7 @@ public class Verify {
     public boolean element_is_enable(String element_name) {
         boolean bool = false;
         try {
-            if (element.find(driver, element_name).isEnabled()) {
+            if (element.find(element_name).isEnabled()) {
                 bool = true;
             }
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class Verify {
     public boolean element_is_selected(String element_name) {
         boolean bool = false;
         try {
-            if (element.find(driver, element_name).isSelected()) {
+            if (element.find( element_name).isSelected()) {
                 bool = true;
             }
         } catch (Exception e) {

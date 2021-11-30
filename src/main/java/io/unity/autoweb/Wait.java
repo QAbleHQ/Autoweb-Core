@@ -26,7 +26,7 @@ public class Wait {
     public void wait_until_element_is_visible(String locator_value)
     {
         new WebDriverWait(driver, Duration.ofSeconds(60))
-                .until(ExpectedConditions.visibilityOf((element.find(locator_value)));
+                .until(ExpectedConditions.visibilityOf((element.find(locator_value))));
     }
 
     public void wait_for_second(int second)
