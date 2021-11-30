@@ -17,20 +17,39 @@ public class Wait {
         element = new FindElement(driver);
 
     }
-    public void wait_until_element_is_clickable(String locator_value)
-    {
+
+    public void wait_until_element_is_clickable(String locator_value) {
         new WebDriverWait(driver, Duration.ofSeconds(60))
                 .until(ExpectedConditions.elementToBeClickable(element.find(locator_value)));
     }
 
-    public void wait_until_element_is_visible(String locator_value)
-    {
+
+    public void wait_until_element_is_visible(String locator_value) {
         new WebDriverWait(driver, Duration.ofSeconds(60))
                 .until(ExpectedConditions.visibilityOf((element.find(locator_value))));
     }
 
-    public void wait_for_second(int second)
-    {
+    public void wait_until_element_is_disappear(String locator_value) {
+        new WebDriverWait(driver, Duration.ofSeconds(60))
+                .until(ExpectedConditions.invisibilityOf((element.find(locator_value))));
+    }
+
+    public void wait_until_all_element_is_visible(String locator_value) {
+        new WebDriverWait(driver, Duration.ofSeconds(60))
+                .until(ExpectedConditions.visibilityOfAllElements((element.find(locator_value))));
+    }
+
+    public void wait_until_all_element_is_disappear(String locator_value) {
+        new WebDriverWait(driver, Duration.ofSeconds(60))
+                .until(ExpectedConditions.invisibilityOfAllElements(((element.find(locator_value)))));
+    }
+
+    public void wait_until_alert_is_present(String locator_value) {
+        new WebDriverWait(driver, Duration.ofSeconds(60))
+                .until(ExpectedConditions.alertIsPresent());
+    }
+
+    public void wait_for_second(int second) {
         try {
             Thread.sleep(second * 1000);
         } catch (InterruptedException e) {
