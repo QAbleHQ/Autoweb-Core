@@ -9,11 +9,11 @@ import java.time.Duration;
 public class Alert {
 
     WebDriver driver;
-    FindElement element;
+    Element element;
 
     public Alert(WebDriver dri) {
         this.driver = dri;
-        element = new FindElement(driver);
+        element = new Element(driver);
     }
 
     public String get_alert_text() {

@@ -1,22 +1,19 @@
 package io.unity.autoweb;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Wait {
 
     WebDriver driver;
-    FindElement element;
+    Element element;
 
     public Wait(WebDriver dri) {
         this.driver = dri;
-        element = new FindElement(driver);
+        element = new Element(driver);
 
     }
 

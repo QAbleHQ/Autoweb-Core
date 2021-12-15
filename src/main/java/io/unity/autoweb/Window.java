@@ -8,11 +8,11 @@ import org.openqa.selenium.WindowType;
 public class Window {
 
     WebDriver driver;
-    FindElement element;
+    Element element;
 
     public Window(WebDriver dri) {
         this.driver = dri;
-        element = new FindElement(driver);
+        element = new Element(driver);
 
     }
 

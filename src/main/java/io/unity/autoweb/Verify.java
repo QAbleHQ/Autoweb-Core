@@ -7,11 +7,11 @@ public class Verify {
 
 
     WebDriver driver;
-    FindElement element;
+    Element element;
 
     public Verify(WebDriver dri) {
         this.driver = dri;
-        element = new FindElement(driver);
+        element = new Element(driver);
 
     }
 
