@@ -209,8 +209,8 @@ public class Element {
         find(locator_value).sendKeys(text_to_enter);
     }
 
-    public void clear_text_field(String locator_value, String text_to_enter) {
-        find(locator_value).sendKeys(text_to_enter);
+    public void clear_text_field(String locator_value) {
+        find(locator_value).clear();
     }
 
     public void clear_and_enter_in_text_field(String locator_value, String text_to_enter)

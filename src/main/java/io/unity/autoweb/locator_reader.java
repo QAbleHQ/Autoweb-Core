@@ -36,9 +36,10 @@ public class locator_reader {
         return object.get("locator_type").toString()+":"+object.get("locator_value").toString();
     }
 
-    public JSONObject get_locator_object(String locator_object_name) throws IOException {
+    public JSONObject get_locator_object(String locator_object_name) throws Exception {
 
-        File file = new File("src/test/resources/webapplocators");
+        File file = new File("src/test/resources/webapplocators/");
+        System.out.println(file.getAbsolutePath());
         JSONObject object = null;
         try {
             List<File> files = Files.list(Paths.get(file.getAbsolutePath()))
@@ -63,10 +64,11 @@ public class locator_reader {
             }
         } catch (IOException e) {
             // Error while reading the directory
+            e.printStackTrace();
         }
         if(object == null)
         {
-       //     throw new locator_not_found_exception("Locator Value " + locator_object_name + " is not found in JSON File");
+            throw new Exception("Locator Value " + locator_object_name + " is not found in JSON File");
         }
         return object;
     }
