@@ -6,7 +6,7 @@
 
     <groupId>unity</groupId>
     <artifactId>autoweb-core</artifactId>
-    <version>0.0.2.007</version>
+    <version>0.0.2.008</version>
 
     <distributionManagement>
         <repository>

@@ -22,7 +22,9 @@ public class Element {
 
 
         WebElement element = null;
-        String[] locator_to_find = locator_value.split(":");
+        locator_reader reader = new locator_reader();
+
+        String[] locator_to_find = reader.get_locator_value(locator_value).split(":");
 
         switch (locator_to_find[0]) {
             case "xpath":
