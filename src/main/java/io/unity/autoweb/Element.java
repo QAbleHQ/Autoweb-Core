@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
@@ -26,6 +27,8 @@ public class Element {
 
         String[] locator_to_find = reader.get_locator_value(locator_value).split(":");
 
+        System.out.println("Finding Element Using : " +locator_to_find[0]);
+        System.out.println("Trying to find Element : "  + locator_to_find[1]);
         switch (locator_to_find[0]) {
             case "xpath":
                 element = driver.findElement(By.xpath(locator_to_find[1]));
