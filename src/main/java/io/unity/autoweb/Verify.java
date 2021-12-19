@@ -56,4 +56,13 @@ public class Verify {
         assertThat(driver.getTitle()).isEqualTo(title);
     }
 
+    public void element_text_is_equal_to(String element_name,String text_to_verify)
+    {
+        assertThat(element.find(element_name)).isEqualTo(text_to_verify);
+    }
+
+
+
+
+
 }
