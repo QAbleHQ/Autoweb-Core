@@ -8,11 +8,11 @@ import java.io.IOException;
 
 public class Browser {
     WebDriver driver;
-    FindElement element;
+    Element element;
 
     public Browser(WebDriver dri) {
         this.driver = dri;
-        element = new FindElement(driver);
+        element = new Element(driver);
 
     }
 
@@ -47,11 +47,11 @@ public class Browser {
     }
 
     public void click(String elementName) {
-        element.find(driver, elementName).click();
+        element.find(elementName).click();
     }
 
     public void enter_text(String element_name, String text_to_enter) {
-        element.find(driver, element_name).sendKeys(text_to_enter);
+        element.find( element_name).sendKeys(text_to_enter);
     }
 
     public void close_browser() {

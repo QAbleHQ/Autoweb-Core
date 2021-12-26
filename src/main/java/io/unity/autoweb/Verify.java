@@ -1,17 +1,18 @@
 package io.unity.autoweb;
 
 import org.openqa.selenium.WebDriver;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class Verify {
 
 
     WebDriver driver;
-    FindElement element;
+    Element element;
 
     public Verify(WebDriver dri) {
         this.driver = dri;
-        element = new FindElement(driver);
+        element = new Element(driver);
 
     }
 
@@ -42,7 +43,7 @@ public class Verify {
     public boolean element_is_selected(String element_name) {
         boolean bool = false;
         try {
-            if (element.find( element_name).isSelected()) {
+            if (element.find(element_name).isSelected()) {
                 bool = true;
             }
         } catch (Exception e) {
@@ -51,9 +52,13 @@ public class Verify {
         return bool;
     }
 
-    public void current_title_is_equal_to(String title)
-    {
+    public void current_title_is_equal_to(String title) {
         assertThat(driver.getTitle()).isEqualTo(title);
     }
+
+    public void element_text_is_equal_to(String element_name, String text_to_verify) {
+        assertThat(element.find(element_name)).isEqualTo(text_to_verify);
+    }
+
 
 }
