@@ -5,6 +5,9 @@ import org.openqa.selenium.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Browser {
     WebDriver driver;
@@ -51,7 +54,7 @@ public class Browser {
     }
 
     public void enter_text(String element_name, String text_to_enter) {
-        element.find( element_name).sendKeys(text_to_enter);
+        element.find(element_name).sendKeys(text_to_enter);
     }
 
     public void close_browser() {
@@ -59,9 +62,32 @@ public class Browser {
     }
 
     public void take_page_screenshot(String image_name) {
+
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
-            FileUtils.copyFile(scrFile, new File("./" + image_name + ".png"));
+            create_screenshot_dir();
+            FileUtils.copyFile(scrFile, new File("./screenshot/" + image_name + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void create_screenshot_dir() throws IOException {
+        Path screen_shot_path = Paths.get("./" + "screenshot");
+        if (!Files.isDirectory(screen_shot_path)) {
+            Files.createTempDirectory(screen_shot_path.toAbsolutePath().toString());
+        }
+
+
+    }
+
+
+    public void take_page_screenshot(String folder_path, String image_name) {
+        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(scrFile, new File(folder_path + "/" + image_name + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
