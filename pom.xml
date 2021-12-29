@@ -6,7 +6,7 @@
 
     <groupId>unity</groupId>
     <artifactId>autoweb-core</artifactId>
-    <version>0.0.2.018</version>
+    <version>0.0.2.019-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
@@ -15,7 +15,9 @@
             <url>https://maven.pkg.github.com/qablehq/autoweb-core</url>
         </repository>
     </distributionManagement>
-
+    <scm>
+        <developerConnection>scm:git:ssh:git@github.com:QAbleHQ/Autoweb-Core.git</developerConnection>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
