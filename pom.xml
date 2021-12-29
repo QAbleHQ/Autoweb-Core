@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>unity</groupId>
     <artifactId>autoweb-core</artifactId>
-    <version>0.0.2.20</version>
+    <version>0.0.3</version>
 
     <distributionManagement>
         <repository>
@@ -15,8 +16,8 @@
     </distributionManagement>
     <scm>
         <developerConnection>scm:git:ssh:git@github.com:QAbleHQ/Autoweb-Core.git</developerConnection>
-      <tag>0.0.2.20</tag>
-  </scm>
+        <tag>0.0.2.20</tag>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -62,14 +63,14 @@
 
         <pluginManagement>
             <plugins>
-               <plugin>
-                   <artifactId>maven-compiler-plugin</artifactId>
-                   <version>3.7.0</version>
-                   <configuration>
-                       <source>1.8</source>
-                       <target>1.8</target>
-                   </configuration>
-               </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>

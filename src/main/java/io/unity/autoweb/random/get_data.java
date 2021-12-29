@@ -3,6 +3,9 @@ package io.unity.autoweb.random;
 import com.github.javafaker.Faker;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class get_data {
     static Faker faker = null;
 
@@ -33,6 +36,11 @@ public class get_data {
 
     public static String last_name() {
         return faker.name().lastName();
+    }
+
+    public static String time_stamp()
+    {
+       return new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
     }
 
 
