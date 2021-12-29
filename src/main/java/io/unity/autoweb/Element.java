@@ -1,9 +1,7 @@
 package io.unity.autoweb;
 
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.sql.SQLOutput;
 import java.util.List;
@@ -27,8 +25,8 @@ public class Element {
 
         String[] locator_to_find = reader.get_locator_value(locator_value).split(":");
 
-        System.out.println("Finding Element Using : " +locator_to_find[0]);
-        System.out.println("Trying to find Element : "  + locator_to_find[1]);
+        System.out.println("Finding Element Using : " + locator_to_find[0]);
+        System.out.println("Trying to find Element : " + locator_to_find[1]);
         switch (locator_to_find[0]) {
             case "xpath":
                 element = driver.findElement(By.xpath(locator_to_find[1]));
@@ -65,7 +63,9 @@ public class Element {
     public List<WebElement> find_multiple_elements(String locator_value) {
 
         List<WebElement> elements = null;
-        String[] locator_to_find = locator_value.split(":");
+
+        locator_reader reader = new locator_reader();
+        String[] locator_to_find = reader.get_locator_value(locator_value).split(":");
 
         switch (locator_to_find[0]) {
             case "xpath":
@@ -104,7 +104,9 @@ public class Element {
         WebElement main = find(main_element);
 
         List<WebElement> elements = null;
-        String[] locator_to_find = element_to_find.split(":");
+
+        locator_reader reader = new locator_reader();
+        String[] locator_to_find = reader.get_locator_value(element_to_find).split(":");
 
         switch (locator_to_find[0]) {
             case "xpath":
@@ -194,17 +196,6 @@ public class Element {
         return find(locator_value).getText();
     }
 
-    public void find_above_element(String locator_value) {
-
-
-    }
-
-    public void find_below_element(String locator_value) {
-
-
-    }
-
-
     public void enter_text(String locator_value, String text_to_enter) {
         find(locator_value).sendKeys(text_to_enter);
     }
@@ -213,14 +204,43 @@ public class Element {
         find(locator_value).clear();
     }
 
-    public void clear_and_enter_in_text_field(String locator_value, String text_to_enter)
-    {
+    public void clear_and_enter_in_text_field(String locator_value, String text_to_enter) {
         find(locator_value).clear();
         find(locator_value).sendKeys(text_to_enter);
     }
 
-    public void click(String locator_value)
-    {
+    public void click(String locator_value) {
         find(locator_value).click();
     }
+
+    public void click_on_element_with_text_from_list(String element_name, String element_text_for_click) {
+        List<WebElement> elements_list = find_multiple_elements(element_name);
+        Boolean bool = false;
+
+        for (WebElement element : elements_list) {
+            if (element.getText().contains(element_text_for_click)) {
+                click(element_name);
+            }
+        }
+
+    }
+
+    public void click_using_js(WebElement element) throws Exception {
+        try {
+            if (element.isEnabled() && element.isDisplayed()) {
+                System.out.println("Clicking on element with using java script click");
+
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+            } else {
+                System.out.println("Unable to click on element");
+            }
+        } catch (StaleElementReferenceException e) {
+            System.out.println("Element is not attached to the page document " + e.getStackTrace());
+        } catch (NoSuchElementException e) {
+            System.out.println("Element was not found in DOM " + e.getStackTrace());
+        } catch (Exception e) {
+            System.out.println("Unable to click on element " + e.getStackTrace());
+        }
+    }
+
 }

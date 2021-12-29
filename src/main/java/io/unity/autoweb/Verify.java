@@ -1,6 +1,13 @@
 package io.unity.autoweb;
 
+import io.unity.autoweb.exception.list_size_not_matching_exception;
+import io.unity.autoweb.exception.locator_not_found_exception;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -58,6 +65,55 @@ public class Verify {
 
     public void element_text_is_equal_to(String element_name, String text_to_verify) {
         assertThat(element.find(element_name)).isEqualTo(text_to_verify);
+    }
+
+    public void element_text_is_available_in_list(String element_name, String text_to_verify) {
+        List<WebElement> elements_list = element.find_multiple_elements(element_name);
+        Boolean bool = false;
+
+        for (WebElement element : elements_list) {
+
+            if (element.getText().contains(text_to_verify)) {
+                bool = true;
+            }
+        }
+        assertThat(bool).isTrue();
+    }
+
+
+    public ArrayList<String> covert_web_element_to_string_list(List<WebElement> elements_list) {
+
+        ArrayList<String> actual_list = new ArrayList<>();
+        for (WebElement element_list_member : elements_list) {
+            actual_list.add(element_list_member.getText());
+        }
+        return actual_list;
+    }
+
+    public void element_text_is_in_alphabetical_order(String element_name, ArrayList<String> list_to_verify) throws list_size_not_matching_exception {
+        List<WebElement> elements_list = element.find_multiple_elements(element_name);
+        ArrayList<String> actual_list = covert_web_element_to_string_list(elements_list);
+
+        Boolean bool = false;
+
+        Collections.sort(actual_list);
+
+        if (actual_list.size() == list_to_verify.size()) {
+            for (int i = 0; i < actual_list.size(); i++) {
+
+                if (actual_list.get(i).equalsIgnoreCase(list_to_verify.get(i))) {
+                    bool = true;
+                } else {
+                    bool = false;
+                    break;
+                }
+            }
+        } else {
+            bool = false;
+            throw new list_size_not_matching_exception("Element List on page is not matching with the Given List");
+        }
+        assertThat(bool).isTrue();
+
     }
 
 
