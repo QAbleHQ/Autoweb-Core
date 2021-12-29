@@ -57,6 +57,11 @@ public class Browser {
         element.find(element_name).sendKeys(text_to_enter);
     }
 
+
+
+
+
+
     public void close_browser() {
         driver.quit();
     }

@@ -6,7 +6,7 @@
 
     <groupId>unity</groupId>
     <artifactId>autoweb-core</artifactId>
-    <version>0.0.2.015</version>
+    <version>0.0.2.018</version>
 
     <distributionManagement>
         <repository>
@@ -49,6 +49,11 @@
             <version>2.11.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+        </dependency>
     </dependencies>
 
 
