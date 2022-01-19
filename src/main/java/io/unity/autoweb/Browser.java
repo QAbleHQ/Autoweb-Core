@@ -21,6 +21,7 @@ public class Browser {
 
 
     public void open_url(String url) {
+
         driver.get(url);
     }
 

@@ -38,7 +38,7 @@ public class locator_reader {
 
     public JSONObject get_locator_object(String locator_object_name) throws Exception {
 
-        File file = new File("src/test/resources/webapplocators/");
+        File file = new File("src/test/java/web/object_repository/");
         System.out.println(file.getAbsolutePath());
         JSONObject object = null;
         try {

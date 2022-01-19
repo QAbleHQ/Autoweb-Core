@@ -23,7 +23,7 @@ public class Verify {
 
     }
 
-    public boolean element_is_present(String element_name) {
+    public void element_is_present(String element_name) {
         boolean bool = false;
         try {
             if (element.find(element_name).isDisplayed()) {
@@ -32,10 +32,10 @@ public class Verify {
         } catch (Exception e) {
 
         }
-        return bool;
+        assertThat(bool).isTrue();
     }
 
-    public boolean element_is_enable(String element_name) {
+    public void element_is_enable(String element_name) {
         boolean bool = false;
         try {
             if (element.find(element_name).isEnabled()) {
@@ -44,10 +44,10 @@ public class Verify {
         } catch (Exception e) {
 
         }
-        return bool;
+        assertThat(bool).isTrue();
     }
 
-    public boolean element_is_selected(String element_name) {
+    public void element_is_selected(String element_name) {
         boolean bool = false;
         try {
             if (element.find(element_name).isSelected()) {
@@ -56,7 +56,8 @@ public class Verify {
         } catch (Exception e) {
 
         }
-        return bool;
+        assertThat(bool).isTrue();
+
     }
 
     public void current_title_is_equal_to(String title) {
@@ -64,7 +65,7 @@ public class Verify {
     }
 
     public void element_text_is_equal_to(String element_name, String text_to_verify) {
-        assertThat(element.find(element_name)).isEqualTo(text_to_verify);
+        assertThat(element.find(element_name).getText()).isEqualTo(text_to_verify);
     }
 
     public void element_text_is_available_in_list(String element_name, String text_to_verify) {
