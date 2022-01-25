@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 public class Browser {
     WebDriver driver;
     Element element;
+    testng_logs logs = new testng_logs();
 
     public Browser(WebDriver dri) {
         this.driver = dri;
@@ -27,43 +28,45 @@ public class Browser {
 
 
     public String get_current_url() {
-        return driver.getCurrentUrl();
+        String current_url = driver.getCurrentUrl();
+        logs.test_step("getting current url : " + current_url);
+        return current_url;
     }
 
     public String get_page_source() {
+        String current_page_source = driver.getPageSource();
+        logs.test_step("getting current page source : ");
+        logs.test_step("==========================================================");
+        logs.test_step(current_page_source);
+        logs.test_step("==========================================================");
+
         return driver.getPageSource();
     }
 
     public String get_title() {
-        return driver.getTitle();
+        String current_page_title = driver.getTitle();
+        logs.test_step("getting current page title : " +current_page_title);
+        return current_page_title;
     }
 
     public void navigate_to_back() {
+        logs.test_step("Navigate to previous page");
         driver.navigate().back();
     }
 
     public void navigate_to_forward() {
+        logs.test_step("Navigate to Next page");
+
         driver.navigate().forward();
     }
 
     public void refresh_page() {
+        logs.test_step("Refresh the Page");
         driver.navigate().refresh();
     }
 
-    public void click(String elementName) {
-        element.find(elementName).click();
-    }
-
-    public void enter_text(String element_name, String text_to_enter) {
-        element.find(element_name).sendKeys(text_to_enter);
-    }
-
-
-
-
-
-
     public void close_browser() {
+        logs.test_step("Close browser");
         driver.quit();
     }
 
@@ -72,7 +75,10 @@ public class Browser {
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
             create_screenshot_dir();
-            FileUtils.copyFile(scrFile, new File("./screenshot/" + image_name + ".png"));
+            File screenshot_file = new File("./screenshot/" + image_name + ".png");
+            FileUtils.copyFile(scrFile,screenshot_file);
+
+            logs.test_step("Screenshot saved at  <img href="+screenshot_file.getAbsolutePath()+">" );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,21 +99,15 @@ public class Browser {
     public void take_page_screenshot(String folder_path, String image_name) {
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
-            FileUtils.copyFile(scrFile, new File(folder_path + "/" + image_name + ".png"));
+            File screenshot_file = new File(folder_path + "/" + image_name + ".png");
+            FileUtils.copyFile(scrFile, screenshot_file);
+            logs.test_step("Screenshot saved at  <img href="+screenshot_file.getAbsolutePath()+">" );
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void take_element_screen_shot(WebElement element, String image_name) {
-        File scrFile = element.getScreenshotAs(OutputType.FILE);
-        try {
-            FileUtils.copyFile(scrFile, new File("./" + image_name + ".png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 

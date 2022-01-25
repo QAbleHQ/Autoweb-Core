@@ -83,7 +83,6 @@ public class locator_reader {
 
             json = (JSONObject) parser.parse(new String(Files.readAllBytes(Paths.get(file_path).toAbsolutePath())));
 
-            System.out.println(json);
 
             object = (JSONObject) json.get(locator_object_name);
         } catch (Exception e) {

@@ -10,6 +10,7 @@ public class Alert {
 
     WebDriver driver;
     Element element;
+    testng_logs logs = new testng_logs();
 
     public Alert(WebDriver dri) {
         this.driver = dri;
@@ -18,6 +19,7 @@ public class Alert {
 
     public String get_alert_text() {
 
+        logs.test_step("Get Alert Text");
         org.openqa.selenium.Alert alert = new WebDriverWait(driver, Duration.ofSeconds(60))
                 .until(ExpectedConditions.alertIsPresent());
 
@@ -26,6 +28,7 @@ public class Alert {
 
     public void accept()
     {
+        logs.test_step("Accept the Alert");
         org.openqa.selenium.Alert alert = driver.switchTo().alert();
         alert.accept();
 
@@ -33,12 +36,14 @@ public class Alert {
 
     public void dismiss()
     {
+        logs.test_step("Dismiss the Alert");
         org.openqa.selenium.Alert alert = driver.switchTo().alert();
         alert.dismiss();
     }
 
     public void enter_text_in_alert(String text)
     {
+        logs.test_step("Enter "+text+" in the Alert");
         org.openqa.selenium.Alert alert = new WebDriverWait(driver, Duration.ofSeconds(60))
                 .until(ExpectedConditions.alertIsPresent());
         alert.sendKeys(text);

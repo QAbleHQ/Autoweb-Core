@@ -1,8 +1,11 @@
 package io.unity.autoweb;
 
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.List;
 
@@ -11,6 +14,7 @@ import static org.openqa.selenium.support.locators.RelativeLocator.with;
 public class Element {
 
     WebDriver driver;
+    testng_logs logs = new testng_logs();
 
     public Element(WebDriver dri) {
         this.driver = dri;
@@ -25,8 +29,6 @@ public class Element {
 
         String[] locator_to_find = reader.get_locator_value(locator_value).split(":");
 
-        System.out.println("Finding Element Using : " + locator_to_find[0]);
-        System.out.println("Trying to find Element : " + locator_to_find[1]);
         switch (locator_to_find[0]) {
             case "xpath":
                 element = driver.findElement(By.xpath(locator_to_find[1]));
@@ -181,6 +183,7 @@ public class Element {
     }
 
     public WebElement get_active_element() {
+
         return driver.switchTo().activeElement();
     }
 
@@ -189,6 +192,7 @@ public class Element {
     }
 
     public String get_css_value(String locator_value, String css) {
+
         return find(locator_value).getCssValue(css);
     }
 
@@ -197,23 +201,28 @@ public class Element {
     }
 
     public void enter_text(String locator_value, String text_to_enter) {
+        logs.test_step("Enter text " + text_to_enter + " at locator" + locator_value);
         find(locator_value).sendKeys(text_to_enter);
     }
 
     public void clear_text_field(String locator_value) {
+        logs.test_step("clear value from " + locator_value + " text fields");
         find(locator_value).clear();
     }
 
     public void clear_and_enter_in_text_field(String locator_value, String text_to_enter) {
+        logs.test_step("clear value from " + locator_value + " text fields and enter text" + text_to_enter);
         find(locator_value).clear();
         find(locator_value).sendKeys(text_to_enter);
     }
 
     public void click(String locator_value) {
+        logs.test_step("Click on " + locator_value);
         find(locator_value).click();
     }
 
     public void click_on_element_with_text_from_list(String element_name, String element_text_for_click) {
+        logs.test_step("Click on " + element_text_for_click + " from list ");
         List<WebElement> elements_list = find_multiple_elements(element_name);
         Boolean bool = false;
 
@@ -227,19 +236,31 @@ public class Element {
 
     public void click_using_js(WebElement element) throws Exception {
         try {
+            logs.test_step("Click on " + element);
             if (element.isEnabled() && element.isDisplayed()) {
-                System.out.println("Clicking on element with using java script click");
+                //  System.out.println("Clicking on element with using java script click");
 
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
             } else {
-                System.out.println("Unable to click on element");
+                //          System.out.println("Unable to click on element");
             }
         } catch (StaleElementReferenceException e) {
-            System.out.println("Element is not attached to the page document " + e.getStackTrace());
+            //        System.out.println("Element is not attached to the page document " + e.getStackTrace());
         } catch (NoSuchElementException e) {
-            System.out.println("Element was not found in DOM " + e.getStackTrace());
+            //      System.out.println("Element was not found in DOM " + e.getStackTrace());
         } catch (Exception e) {
-            System.out.println("Unable to click on element " + e.getStackTrace());
+            //        System.out.println("Unable to click on element " + e.getStackTrace());
+        }
+    }
+
+    public void take_element_screen_shot(WebElement element, String image_name) {
+        File scrFile = element.getScreenshotAs(OutputType.FILE);
+        try {
+            File screenshot_file = new File("./" + image_name + ".png");
+            FileUtils.copyFile(scrFile, screenshot_file);
+            logs.test_step("Screenshot saved at  <img href=" + screenshot_file.getAbsolutePath() + ">");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
