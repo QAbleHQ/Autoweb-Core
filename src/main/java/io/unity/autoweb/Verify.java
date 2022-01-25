@@ -40,6 +40,22 @@ public class Verify {
 
     }
 
+    public boolean check_element_is_present(String element_name) {
+        boolean bool = false;
+        logs.test_step("verify " + element_name + "is displayed");
+        try {
+            if (element.find(element_name).isDisplayed()) {
+                bool = true;
+                logs.test_step("Test Passed");
+            }
+        } catch (Exception e) {
+
+        }
+
+        return bool;
+
+    }
+
     public void element_is_enable(String element_name) {
         logs.test_step("verify " + element_name + "is enable");
         boolean bool = false;
@@ -70,17 +86,17 @@ public class Verify {
     }
 
     public void current_title_is_equal_to(String title) {
-        logs.test_step("verify current page title is " +title);
+        logs.test_step("verify current page title is " + title);
         assertThat(driver.getTitle()).isEqualTo(title);
     }
 
     public void element_text_is_equal_to(String element_name, String text_to_verify) {
-        logs.test_step("verify element "+ element_name+ "text is equal " + text_to_verify);
+        logs.test_step("verify element " + element_name + "text is equal " + text_to_verify);
         assertThat(element.find(element_name).getText()).isEqualTo(text_to_verify);
     }
 
     public void element_text_is_available_in_list(String element_name, String text_to_verify) {
-        logs.test_step("verify text "+text_to_verify+" is available into "+element_name );
+        logs.test_step("verify text " + text_to_verify + " is available into " + element_name);
         List<WebElement> elements_list = element.find_multiple_elements(element_name);
         Boolean bool = false;
 

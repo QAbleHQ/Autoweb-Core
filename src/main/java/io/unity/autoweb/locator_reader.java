@@ -86,7 +86,7 @@ public class locator_reader {
 
             object = (JSONObject) json.get(locator_object_name);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
 
         return object;
