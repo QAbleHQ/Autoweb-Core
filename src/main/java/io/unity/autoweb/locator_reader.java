@@ -16,7 +16,7 @@ public class locator_reader {
     public static void main(String[] args) {
         locator_reader reader = new locator_reader();
         try {
-            System.out.println(reader.get_locator_value("email_text_box"));
+     //       System.out.println(reader.get_locator_value("email_text_box"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,20 +39,20 @@ public class locator_reader {
     public JSONObject get_locator_object(String locator_object_name) throws Exception {
 
         File file = new File("src/test/java/web/object_repository/");
-        System.out.println(file.getAbsolutePath());
+
         JSONObject object = null;
         try {
             List<File> files = Files.list(Paths.get(file.getAbsolutePath()))
                     .map(Path::toFile)
                     .collect(Collectors.toList());
             for (int i = 0; i < files.size(); i++) {
-                System.out.println(files.get(i));
+
                 List<File> folderFiles = Files.list(Paths.get(files.get(i).toString()))
                         .map(Path::toFile)
                         .collect(Collectors.toList());
 
                 for (int j = 0; j < folderFiles.size(); j++) {
-                    System.out.println(folderFiles.get(j));
+
                     object = read_locator_file_and_get_object(folderFiles.get(j).toString(),locator_object_name);
                     if (object != null) {
                         break;

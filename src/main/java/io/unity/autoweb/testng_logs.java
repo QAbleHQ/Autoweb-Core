@@ -8,7 +8,8 @@ public class testng_logs {
 
     public void test_step(String message)
     {
-        Reporter.log(message +"</b>");
+        System.out.println(message);
+        Reporter.log(message +"<br>");
     }
 
 

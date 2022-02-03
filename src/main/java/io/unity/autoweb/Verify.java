@@ -26,7 +26,7 @@ public class Verify {
 
     public void element_is_present(String element_name) {
         boolean bool = false;
-        logs.test_step("verify " + element_name + "is displayed");
+        logs.test_step("verify " + element_name + " is displayed");
         try {
             if (element.find(element_name).isDisplayed()) {
                 bool = true;
@@ -42,11 +42,11 @@ public class Verify {
 
     public boolean check_element_is_present(String element_name) {
         boolean bool = false;
-        logs.test_step("verify " + element_name + "is displayed");
+
         try {
             if (element.find(element_name).isDisplayed()) {
                 bool = true;
-                logs.test_step("Test Passed");
+
             }
         } catch (Exception e) {
 
@@ -57,7 +57,7 @@ public class Verify {
     }
 
     public void element_is_enable(String element_name) {
-        logs.test_step("verify " + element_name + "is enable");
+        logs.test_step("verify " + element_name + " is enable");
         boolean bool = false;
         try {
             if (element.find(element_name).isEnabled()) {
@@ -71,7 +71,7 @@ public class Verify {
     }
 
     public void element_is_selected(String element_name) {
-        logs.test_step("verify " + element_name + "is selected");
+        logs.test_step("verify " + element_name + " is selected");
         boolean bool = false;
         try {
             if (element.find(element_name).isSelected()) {
@@ -91,8 +91,13 @@ public class Verify {
     }
 
     public void element_text_is_equal_to(String element_name, String text_to_verify) {
-        logs.test_step("verify element " + element_name + "text is equal " + text_to_verify);
+        logs.test_step("verify element " + element_name + " text is equal " + text_to_verify);
         assertThat(element.find(element_name).getText()).isEqualTo(text_to_verify);
+    }
+
+    public void element_attribute_is_equal_to(String element_name, String attribute_name,String expected_attribute_value) {
+        logs.test_step("verify element " + element_name + " attribute "+attribute_name+" text is equal " + expected_attribute_value);
+        assertThat(element.find(element_name).getAttribute(attribute_name)).isEqualTo(expected_attribute_value);
     }
 
     public void element_text_is_available_in_list(String element_name, String text_to_verify) {
@@ -142,6 +147,16 @@ public class Verify {
             throw new list_size_not_matching_exception("Element List on page is not matching with the Given List");
         }
         assertThat(bool).isTrue();
+
+    }
+
+    public void verify_check_box_is_checked()
+    {
+
+    }
+
+    public void verify_check_box_is_unchecked()
+    {
 
     }
 

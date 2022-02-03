@@ -1,17 +1,21 @@
 package io.unity.autoweb.random;
 
 import com.github.javafaker.Faker;
+import com.github.javafaker.service.FakeValuesService;
+import com.github.javafaker.service.RandomService;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
-public class get_data {
-    static Faker faker = null;
+public class random_data {
 
-    get_data() {
-        faker = new Faker();
 
+    static Faker faker = new Faker(new Locale("en-IND"));
+
+    public static void main(String[] args) {
+        System.out.println(random_data.first_name());
     }
 
     public static String random_alpha_numeric_string(int length) {
@@ -25,6 +29,7 @@ public class get_data {
     public static String random_numeric_string(int length) {
         return RandomStringUtils.randomNumeric(length);
     }
+
 
     public static String email() {
         return faker.name().username() + "@mailinator.com";
