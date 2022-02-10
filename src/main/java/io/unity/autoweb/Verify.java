@@ -16,6 +16,7 @@ public class Verify {
 
     WebDriver driver;
     Element element;
+    testng_logs logs = new testng_logs();
 
     public Verify(WebDriver dri) {
         this.driver = dri;
@@ -23,51 +24,84 @@ public class Verify {
 
     }
 
-    public boolean element_is_present(String element_name) {
+    public void element_is_present(String element_name) {
         boolean bool = false;
+        logs.test_step("verify " + element_name + " is displayed");
         try {
             if (element.find(element_name).isDisplayed()) {
                 bool = true;
+                logs.test_step("Test Passed");
             }
         } catch (Exception e) {
 
         }
-        return bool;
+
+        assertThat(bool).isTrue();
+
     }
 
-    public boolean element_is_enable(String element_name) {
+    public boolean check_element_is_present(String element_name) {
+        boolean bool = false;
+
+        try {
+            if (element.find(element_name).isDisplayed()) {
+                bool = true;
+
+            }
+        } catch (Exception e) {
+
+        }
+
+        return bool;
+
+    }
+
+    public void element_is_enable(String element_name) {
+        logs.test_step("verify " + element_name + " is enable");
         boolean bool = false;
         try {
             if (element.find(element_name).isEnabled()) {
                 bool = true;
+                logs.test_step("Test Passed");
             }
         } catch (Exception e) {
 
         }
-        return bool;
+        assertThat(bool).isTrue();
     }
 
-    public boolean element_is_selected(String element_name) {
+    public void element_is_selected(String element_name) {
+        logs.test_step("verify " + element_name + " is selected");
         boolean bool = false;
         try {
             if (element.find(element_name).isSelected()) {
                 bool = true;
+                logs.test_step("Test Passed");
             }
         } catch (Exception e) {
 
         }
-        return bool;
+        assertThat(bool).isTrue();
+
     }
 
     public void current_title_is_equal_to(String title) {
+        logs.test_step("verify current page title is " + title);
         assertThat(driver.getTitle()).isEqualTo(title);
     }
 
     public void element_text_is_equal_to(String element_name, String text_to_verify) {
-        assertThat(element.find(element_name)).isEqualTo(text_to_verify);
+        logs.test_step("verify element " + element_name + " text is equal " + text_to_verify);
+        assertThat(element.find(element_name).getText()).isEqualTo(text_to_verify);
+    }
+
+    public void element_attribute_is_equal_to(String element_name, String attribute_name,String expected_attribute_value) {
+        logs.test_step("verify element " + element_name + " attribute "+attribute_name+" text is equal " + expected_attribute_value);
+        assertThat(element.find(element_name).getAttribute(attribute_name)).isEqualTo(expected_attribute_value);
     }
 
     public void element_text_is_available_in_list(String element_name, String text_to_verify) {
+        logs.test_step("verify text " + text_to_verify + " is available into " + element_name);
         List<WebElement> elements_list = element.find_multiple_elements(element_name);
         Boolean bool = false;
 
@@ -81,7 +115,7 @@ public class Verify {
     }
 
 
-    public ArrayList<String> covert_web_element_to_string_list(List<WebElement> elements_list) {
+    public ArrayList<String> convert_web_element_to_string_list(List<WebElement> elements_list) {
 
         ArrayList<String> actual_list = new ArrayList<>();
         for (WebElement element_list_member : elements_list) {
@@ -92,7 +126,7 @@ public class Verify {
 
     public void element_text_is_in_alphabetical_order(String element_name, ArrayList<String> list_to_verify) throws list_size_not_matching_exception {
         List<WebElement> elements_list = element.find_multiple_elements(element_name);
-        ArrayList<String> actual_list = covert_web_element_to_string_list(elements_list);
+        ArrayList<String> actual_list = convert_web_element_to_string_list(elements_list);
 
         Boolean bool = false;
 
@@ -113,6 +147,16 @@ public class Verify {
             throw new list_size_not_matching_exception("Element List on page is not matching with the Given List");
         }
         assertThat(bool).isTrue();
+
+    }
+
+    public void verify_check_box_is_checked()
+    {
+
+    }
+
+    public void verify_check_box_is_unchecked()
+    {
 
     }
 
