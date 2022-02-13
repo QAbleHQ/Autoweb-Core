@@ -1,6 +1,8 @@
 package io.unity.autoweb;
 
 
+import io.appium.java_client.AppiumBy;
+import io.appium.java_client.pagefactory.AndroidBy;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 
@@ -54,6 +56,8 @@ public class Element {
             case "tag":
                 element = driver.findElement(By.tagName(locator_to_find[1]));
                 break;
+            case "accessibility-id":
+                element = driver.findElement(new AppiumBy.ByAccessibilityId(locator_to_find[1]));
             default:
                 System.err.println("Incorrect Locator Type");
         }
