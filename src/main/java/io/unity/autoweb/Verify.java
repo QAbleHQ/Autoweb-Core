@@ -150,15 +150,6 @@ public class Verify {
 
     }
 
-    public void verify_check_box_is_checked()
-    {
-
-    }
-
-    public void verify_check_box_is_unchecked()
-    {
-
-    }
 
 
 }
