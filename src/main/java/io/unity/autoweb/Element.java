@@ -1,15 +1,33 @@
 package io.unity.autoweb;
 
 
+import com.google.common.net.MediaType;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.NetworkInterceptor;
+import org.openqa.selenium.devtools.v85.log.Log;
+import org.openqa.selenium.remote.http.HttpResponse;
+import org.openqa.selenium.remote.http.Route;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
+import static org.openqa.selenium.remote.http.Contents.utf8String;
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
+
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.DevTools;
+
 
 public class Element {
 
@@ -263,5 +281,73 @@ public class Element {
             e.printStackTrace();
         }
     }
+
+    public void Network_Interception_Method(WebDriver driver)
+    {
+         /* 1. If you want to capture network events coming into the browser
+            2. and you want manipulate them you are able to do it with the following examples.*/
+
+        NetworkInterceptor interceptor = new NetworkInterceptor(
+                driver,
+                Route.matching(req -> true)
+                        .to(() -> req -> new HttpResponse()
+                                .setStatus(200)
+                                .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
+                                .setContent(utf8String("Creamy, delicious cheese!"))));
+
+    }
+
+    public void JSException_method(ChromeDriver driver)
+    {
+        //Usage Of This method :
+        //Listen to the JS Exceptions and register callbacks to process the exception details.
+
+        DevTools devTools = driver.getDevTools();
+        devTools.createSession();
+
+       ((ChromeDriver) driver).getDevTools().createSession();
+
+        List<JavascriptException> jsExceptionsList = new ArrayList<>();
+        Consumer<JavascriptException> addEntry = jsExceptionsList::add;
+        devTools.getDomains().events().addJavascriptExceptionListener(addEntry);
+
+        driver.get("https://likita-admin.vercel.app/login");
+
+        WebElement link2click = driver.findElement(By.xpath("//button[@type='submit']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);",
+                link2click, "onclick", "throw new Error('Hello, world!')");
+        link2click.click();
+
+        for (JavascriptException jsException : jsExceptionsList) {
+            System.out.println("JS exception message: " + jsException.getMessage());
+            System.out.println("JS exception system information: " + jsException.getSystemInformation());
+            System.out.println("JS exception Get cause : " + jsException.getCause());
+            System.out.println("JS exception get Build Information: " + jsException.getBuildInformation());
+            System.out.println("JS exception Get full stack trace : " + jsException.fillInStackTrace());
+            System.out.println("JS exception get raw Message : " + jsException.getRawMessage());
+
+            jsException.printStackTrace();
+        }
+    }
+
+    public void console_Log_method(ChromeDriver driver)
+    {
+        DevTools devTools = driver.getDevTools();
+        devTools.createSession();
+        devTools.getCdpSession();
+        devTools.send(Log.enable());
+        devTools.addListener(Log.entryAdded(),
+                logEntry -> {
+                    System.out.println("log   : "+logEntry.getText());
+                    System.out.println("level : "+logEntry.getLevel());
+                    System.out.println("Time  : "+logEntry.getTimestamp());
+                    System.out.println("URL   : "+logEntry.getUrl());
+                    // System.out.println("URL   : "+logEntry);
+
+                });
+//        driver.get("http://the-internet.herokuapp.com/broken_images");
+    }
+
+
 
 }
