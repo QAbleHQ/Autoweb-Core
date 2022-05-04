@@ -287,13 +287,16 @@ public class Element {
          /* 1. If you want to capture network events coming into the browser
             2. and you want manipulate them you are able to do it with the following examples.*/
 
-        NetworkInterceptor interceptor = new NetworkInterceptor(
-                driver,
-                Route.matching(req -> true)
-                        .to(() -> req -> new HttpResponse()
-                                .setStatus(200)
-                                .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
-                                .setContent(utf8String("Creamy, delicious cheese!"))));
+
+
+            NetworkInterceptor interceptor = new NetworkInterceptor(
+                    driver,
+                    Route.matching(req -> true)
+                            .to(() -> req -> new HttpResponse()
+                                    .setStatus(200)
+                                    .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
+                                    .setContent(utf8String("Creamy, delicious cheese!"))));
+
 
     }
 
@@ -319,12 +322,12 @@ public class Element {
         link2click.click();
 
         for (JavascriptException jsException : jsExceptionsList) {
-            System.out.println("JS exception message: " + jsException.getMessage());
-            System.out.println("JS exception system information: " + jsException.getSystemInformation());
-            System.out.println("JS exception Get cause : " + jsException.getCause());
-            System.out.println("JS exception get Build Information: " + jsException.getBuildInformation());
-            System.out.println("JS exception Get full stack trace : " + jsException.fillInStackTrace());
-            System.out.println("JS exception get raw Message : " + jsException.getRawMessage());
+            logs.test_step("JS exception message: " + jsException.getMessage());
+            logs.test_step("JS exception system information: " + jsException.getSystemInformation());
+            logs.test_step("JS exception Get cause : " + jsException.getCause());
+            logs.test_step("JS exception get Build Information: " + jsException.getBuildInformation());
+            logs.test_step("JS exception Get full stack trace : " + jsException.fillInStackTrace());
+            logs.test_step("JS exception get raw Message : " + jsException.getRawMessage());
 
             jsException.printStackTrace();
         }
@@ -338,11 +341,11 @@ public class Element {
         devTools.send(Log.enable());
         devTools.addListener(Log.entryAdded(),
                 logEntry -> {
-                    System.out.println("log   : "+logEntry.getText());
-                    System.out.println("level : "+logEntry.getLevel());
-                    System.out.println("Time  : "+logEntry.getTimestamp());
-                    System.out.println("URL   : "+logEntry.getUrl());
-                    // System.out.println("URL   : "+logEntry);
+                    logs.test_step("INFO : log      : "+logEntry.getText());
+                    logs.test_step("INFO : level    : "+logEntry.getLevel());
+                    logs.test_step("INFO : Time     : "+logEntry.getTimestamp());
+                    logs.test_step("INFO : URL      : "+logEntry.getUrl());
+                    logs.test_step("INFO : WorkerID : "+logEntry.getWorkerId());
 
                 });
 //        driver.get("http://the-internet.herokuapp.com/broken_images");
