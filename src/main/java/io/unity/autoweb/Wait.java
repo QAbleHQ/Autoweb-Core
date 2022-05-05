@@ -1,10 +1,14 @@
 package io.unity.autoweb;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.function.Function;
 
 public class Wait {
 
@@ -55,5 +59,19 @@ public class Wait {
             e.printStackTrace();
 
         }
+    }
+
+
+    public void Explicit_Wait_Method_Element(WebElement element, int time) {
+        WebDriverWait wait = new WebDriverWait(driver, time);
+
+        wait.until(ExpectedConditions.visibilityOfAllElements(element));
+
+        //wait.until(ExpectedConditions.elementToBeClickable(element));
+
+        //wait.until(ExpectedConditions.visibilityOf(element));
+
+        //wait.until(ExpectedConditions.elementToBeSelected(element));
+
     }
 }
