@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.function.Function;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 public class Wait {
 
     WebDriver driver;
@@ -61,17 +63,9 @@ public class Wait {
         }
     }
 
-
-    public void Explicit_Wait_Method_Element(WebElement element, int time) {
-        WebDriverWait wait = new WebDriverWait(driver, time);
-
-        wait.until(ExpectedConditions.visibilityOfAllElements(element));
-
-        //wait.until(ExpectedConditions.elementToBeClickable(element));
-
-        //wait.until(ExpectedConditions.visibilityOf(element));
-
-        //wait.until(ExpectedConditions.elementToBeSelected(element));
-
+    public void Implicit_Wait_For_Page(WebDriver driver)
+    {
+        driver.manage().timeouts().implicitlyWait(10, SECONDS);
     }
+
 }
