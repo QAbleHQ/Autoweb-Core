@@ -59,6 +59,7 @@ public class Wait {
             Thread.sleep((long)second * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Thread.currentThread().interrupt();
 
         }
     }
@@ -67,5 +68,22 @@ public class Wait {
     {
         driver.manage().timeouts().implicitlyWait(10, SECONDS);
     }
+
+    public void Fluent_Wait_Method_For_Element(By locator)
+    {
+        FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+                .withTimeout(Duration.ofSeconds(20))
+                .pollingEvery(Duration.ofSeconds(5))
+                .ignoring(Exception.class);
+
+        WebElement element = wait.until(new Function<WebDriver, WebElement>() {
+            public WebElement apply(WebDriver driver) {
+                WebElement element = driver.findElement(locator);
+                return element;
+            }
+        });
+        element.click();
+    }
+
 
 }
