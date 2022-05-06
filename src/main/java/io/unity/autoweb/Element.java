@@ -27,6 +27,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Reporter;
 
 
 public class Element {
@@ -73,7 +75,7 @@ public class Element {
                 element = driver.findElement(By.tagName(locator_to_find[1]));
                 break;
             default:
-                System.err.println("Incorrect Locator Type");
+                logs.test_step("Incorrect Locator Type");
         }
 
         return element;
@@ -113,7 +115,7 @@ public class Element {
                 elements = driver.findElements(By.tagName(locator_to_find[1]));
                 break;
             default:
-                System.err.println("Incorrect Locator Type");
+                logs.test_step("Incorrect Locator Type");
         }
 
         return elements;
@@ -154,7 +156,7 @@ public class Element {
                 elements = main.findElements(By.tagName(locator_to_find[1]));
                 break;
             default:
-                System.err.println("Incorrect Locator Type");
+                logs.test_step("Incorrect Locator Type");
         }
 
 
@@ -194,7 +196,7 @@ public class Element {
                 element = main.findElement(By.tagName(locator_to_find[1]));
                 break;
             default:
-                System.err.println("Incorrect Locator Type");
+                logs.test_step("Incorrect Locator Type");
         }
 
         return element;
@@ -256,22 +258,23 @@ public class Element {
         try {
             logs.test_step("Click on " + element);
             if (element.isEnabled() && element.isDisplayed()) {
-                //  System.out.println("Clicking on element with using java script click");
+                logs.test_step("Clicking on element with using java script click");
 
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
             } else {
-                //          System.out.println("Unable to click on element");
+                logs.test_step("Unable to click on element");
             }
         } catch (StaleElementReferenceException e) {
-            //        System.out.println("Element is not attached to the page document " + e.getStackTrace());
+            logs.test_step("Element is not attached to the page document " + e.getStackTrace());
         } catch (NoSuchElementException e) {
-            //      System.out.println("Element was not found in DOM " + e.getStackTrace());
+            logs.test_step("Element was not found in DOM " + e.getStackTrace());
         } catch (Exception e) {
-            //        System.out.println("Unable to click on element " + e.getStackTrace());
+            logs.test_step("Unable to click on element " + e.getStackTrace());
         }
     }
 
     public void take_element_screen_shot(WebElement element, String image_name) {
+
         File scrFile = element.getScreenshotAs(OutputType.FILE);
         try {
             File screenshot_file = new File("./" + image_name + ".png");
@@ -285,18 +288,23 @@ public class Element {
     public void Network_Interception_Method(WebDriver driver)
     {
          /* 1. If you want to capture network events coming into the browser
-            2. and you want manipulate them you are able to do it with the following examples.*/
+            2. and you want to manipulate them you are able to do it with the following examples.*/
 
-
-
-            NetworkInterceptor interceptor = new NetworkInterceptor(
-                    driver,
-                    Route.matching(req -> true)
-                            .to(() -> req -> new HttpResponse()
-                                    .setStatus(200)
-                                    .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
-                                    .setContent(utf8String("Creamy, delicious cheese!"))));
-
+        try(NetworkInterceptor interceptor = new NetworkInterceptor(
+                driver,
+                Route.matching(req -> true)
+                        .to(() -> req -> new HttpResponse()
+                                .setStatus(200)
+                                .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
+                                .setStatus(200)
+                                .setContent(utf8String("Creamy, delicious cheese!"))));)
+        {
+            logs.test_step("INFO : Network Interceptor is executed..");
+        }
+        catch(Exception e)
+        {
+            logs.test_step("INFO : "+e.getStackTrace());
+        }
 
     }
 
@@ -348,9 +356,110 @@ public class Element {
                     logs.test_step("INFO : WorkerID : "+logEntry.getWorkerId());
 
                 });
-//        driver.get("http://the-internet.herokuapp.com/broken_images");
+
     }
 
+    public void Select_Single_option_From_Dropdown(WebElement element,String Value)
+    {
+        Select drp = new Select(element);
+        List<WebElement> options = drp.getOptions();
+        for (WebElement option:options)
+        {
+            if(option.getText().equals(Value))
+            {
+                option.click();
+                break;
+            }
+            logs.test_step("INFO : "+Value+" is selected.");
+        }
+    }
+
+    public void Select_All_Options_options_From_dropDown(WebElement element)
+    {
+        Select drp = new Select(element);
+        boolean multiple_Selected_dropDown = drp.isMultiple();
+        List<WebElement> options = drp.getOptions();
+        if (multiple_Selected_dropDown == true)
+        {
+            for (WebElement option : options)
+            {
+                option.click();
+            }
+            logs.test_step("INFO : All options are Selected..");
+        }else
+        {
+            logs.test_step("INFO : This Dropdown is not a multiSelected DropDown.");
+        }
+    }
+
+    public void Select_options_From_Dropdown_By_value(WebElement element,String value)
+    {
+        Select drp = new Select(element);
+        drp.selectByValue(value);
+        logs.test_step("INFO : Select "+value+" From Dropdown");
+
+    }
+
+    public void Select_options_From_Dropdown_By_Index(WebElement element,int index)
+    {
+        Select drp = new Select(element);
+        drp.selectByIndex(index);
+        logs.test_step("INFO : Select "+index+" Index From Dropdown");
+
+    }
+
+    public void Select_options_From_Dropdown_By_VisibleText(WebElement element,String visibleText)
+    {
+        Select drp = new Select(element);
+        drp.selectByVisibleText(visibleText);
+        logs.test_step("INFO : Select "+visibleText+" From Dropdown");
+
+    }
+
+    public void DeSelect_AllOptions_From_dropDown(WebElement element)
+    {
+        Select drp = new Select(element);
+        boolean multiple_Selected_dropDown = drp.isMultiple();
+        if (multiple_Selected_dropDown == true) {
+            drp.deselectAll();
+            logs.test_step("INFO : All options are DeSelected..");
+        } else
+        {
+            logs.test_step("INFO : This Dropdown is not a multiSelected DropDown.");
+        }
+
+    }
+
+    public void DeSelect_options_From_DropDown_Using_Index(WebElement element,int index)
+    {
+        Select drp = new Select(element);
+        drp.deselectByIndex(index);
+        logs.test_step("INFO : De-Select "+index+" From Dropdown");
+    }
+
+    public void DeSelect_options_From_DropDown_Using_Value(WebElement element,String value)
+    {
+        Select drp = new Select(element);
+        drp.deselectByValue(value);
+        logs.test_step("INFO : De-Select "+value+" From Dropdown");
+    }
+
+    public void DeSelect_options_From_DropDown_Using_Visible_Text(WebElement element,String text)
+    {
+        Select drp = new Select(element);
+        drp.deselectByVisibleText(text);
+        logs.test_step("INFO : De-Select "+text+" From Dropdown");
+    }
+
+    public void Get_All_Selected_Options_From_DropDown(WebElement element){
+        Select drp = new Select(element);
+        drp.selectByIndex(2);
+        List<WebElement> AllOptions = drp.getAllSelectedOptions();
+        for(WebElement option:AllOptions)
+        {
+            logs.test_step("INFO : Selected Options are : "+option.getText());
+        }
+    }
 
 
 }
