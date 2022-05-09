@@ -308,7 +308,7 @@ public class Element {
 
     }
 
-    public void JSException_method(ChromeDriver driver)
+    public void JSException_method( ChromeDriver driver,String locator_value)
     {
         //Usage Of This method :
         //Listen to the JS Exceptions and register callbacks to process the exception details.
@@ -322,9 +322,7 @@ public class Element {
         Consumer<JavascriptException> addEntry = jsExceptionsList::add;
         devTools.getDomains().events().addJavascriptExceptionListener(addEntry);
 
-        driver.get("https://likita-admin.vercel.app/login");
-
-        WebElement link2click = driver.findElement(By.xpath("//button[@type='submit']"));
+        WebElement link2click = find(locator_value);
         ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);",
                 link2click, "onclick", "throw new Error('Hello, world!')");
         link2click.click();
@@ -359,9 +357,9 @@ public class Element {
 
     }
 
-    public void Select_Single_option_From_Dropdown(WebElement element,String Value)
+    public void Select_Single_option_From_Dropdown(String locator_value,String Value)
     {
-        Select drp = new Select(element);
+        Select drp = new Select(find(locator_value));
         List<WebElement> options = drp.getOptions();
         for (WebElement option:options)
         {
@@ -374,9 +372,9 @@ public class Element {
         }
     }
 
-    public void Select_All_Options_options_From_dropDown(WebElement element)
+    public void Select_All_Options_options_From_dropDown(String locator_value)
     {
-        Select drp = new Select(element);
+        Select drp = new Select(find(locator_value));
         boolean multiple_Selected_dropDown = drp.isMultiple();
         List<WebElement> options = drp.getOptions();
         if (multiple_Selected_dropDown == true)
@@ -392,33 +390,33 @@ public class Element {
         }
     }
 
-    public void Select_options_From_Dropdown_By_value(WebElement element,String value)
+    public void Select_options_From_Dropdown_By_value(String locator_value,String value)
     {
-        Select drp = new Select(element);
+        Select drp = new Select(find(locator_value));
         drp.selectByValue(value);
         logs.test_step("INFO : Select "+value+" From Dropdown");
 
     }
 
-    public void Select_options_From_Dropdown_By_Index(WebElement element,int index)
+    public void Select_options_From_Dropdown_By_Index(String locator_value,int index)
     {
-        Select drp = new Select(element);
+        Select drp = new Select(find(locator_value));
         drp.selectByIndex(index);
         logs.test_step("INFO : Select "+index+" Index From Dropdown");
 
     }
 
-    public void Select_options_From_Dropdown_By_VisibleText(WebElement element,String visibleText)
+    public void Select_options_From_Dropdown_By_VisibleText(String locator_value,String visibleText)
     {
-        Select drp = new Select(element);
+        Select drp = new Select(find(locator_value));
         drp.selectByVisibleText(visibleText);
         logs.test_step("INFO : Select "+visibleText+" From Dropdown");
 
     }
 
-    public void DeSelect_AllOptions_From_dropDown(WebElement element)
+    public void DeSelect_AllOptions_From_dropDown(String locator_value)
     {
-        Select drp = new Select(element);
+        Select drp = new Select(find(locator_value));
         boolean multiple_Selected_dropDown = drp.isMultiple();
         if (multiple_Selected_dropDown == true) {
             drp.deselectAll();
@@ -430,29 +428,29 @@ public class Element {
 
     }
 
-    public void DeSelect_options_From_DropDown_Using_Index(WebElement element,int index)
+    public void DeSelect_options_From_DropDown_Using_Index(String locator_value,int index)
     {
-        Select drp = new Select(element);
+        Select drp = new Select(find(locator_value));
         drp.deselectByIndex(index);
         logs.test_step("INFO : De-Select "+index+" From Dropdown");
     }
 
-    public void DeSelect_options_From_DropDown_Using_Value(WebElement element,String value)
+    public void DeSelect_options_From_DropDown_Using_Value(String locator_value,String value)
     {
-        Select drp = new Select(element);
+        Select drp = new Select(find(locator_value));
         drp.deselectByValue(value);
         logs.test_step("INFO : De-Select "+value+" From Dropdown");
     }
 
-    public void DeSelect_options_From_DropDown_Using_Visible_Text(WebElement element,String text)
+    public void DeSelect_options_From_DropDown_Using_Visible_Text(String locator_value,String text)
     {
-        Select drp = new Select(element);
+        Select drp = new Select(find(locator_value));
         drp.deselectByVisibleText(text);
         logs.test_step("INFO : De-Select "+text+" From Dropdown");
     }
 
-    public void Get_All_Selected_Options_From_DropDown(WebElement element){
-        Select drp = new Select(element);
+    public void Get_All_Selected_Options_From_DropDown(String locator_value){
+        Select drp = new Select(find(locator_value));
         drp.selectByIndex(2);
         List<WebElement> AllOptions = drp.getAllSelectedOptions();
         for(WebElement option:AllOptions)
