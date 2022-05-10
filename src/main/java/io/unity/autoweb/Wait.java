@@ -64,25 +64,25 @@ public class Wait {
         }
     }
 
-    public void Implicit_Wait_For_Page(WebDriver driver)
+    public void implicit_wait_for_page(WebDriver driver)
     {
         driver.manage().timeouts().implicitlyWait(10, SECONDS);
     }
 
-    public void Fluent_Wait_Method_For_Element(By locator)
+    public void fluent_wait_method_for_element(String locator_value,int TimeoutTime,int PollingTime)
     {
         FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                .withTimeout(Duration.ofSeconds(20))
-                .pollingEvery(Duration.ofSeconds(5))
+                .withTimeout(Duration.ofSeconds(TimeoutTime))
+                .pollingEvery(Duration.ofSeconds(PollingTime))
                 .ignoring(Exception.class);
 
-        WebElement element = wait.until(new Function<WebDriver, WebElement>() {
+        WebElement element2 = wait.until(new Function<WebDriver, WebElement>() {
             public WebElement apply(WebDriver driver) {
-                WebElement element = driver.findElement(locator);
-                return element;
+                WebElement element2 = element.find(locator_value);
+                return element2;
             }
         });
-        element.click();
+        element2.click();
     }
 
 

@@ -285,7 +285,7 @@ public class Element {
         }
     }
 
-    public void Network_Interception_Method(WebDriver driver)
+    public void network_interception_Method(WebDriver driver)
     {
          /* 1. If you want to capture network events coming into the browser
             2. and you want to manipulate them you are able to do it with the following examples.*/
@@ -308,7 +308,7 @@ public class Element {
 
     }
 
-    public void JSException_method( ChromeDriver driver,String locator_value)
+    public void jsException_method( ChromeDriver driver,String locator_value)
     {
         //Usage Of This method :
         //Listen to the JS Exceptions and register callbacks to process the exception details.
@@ -357,7 +357,7 @@ public class Element {
 
     }
 
-    public void Select_Single_option_From_Dropdown(String locator_value,String Value)
+    public void select_single_option_from_dropdown(String locator_value,String Value)
     {
         Select drp = new Select(find(locator_value));
         List<WebElement> options = drp.getOptions();
@@ -372,7 +372,7 @@ public class Element {
         }
     }
 
-    public void Select_All_Options_options_From_dropDown(String locator_value)
+    public void select_all_options_options_from_dropDown(String locator_value)
     {
         Select drp = new Select(find(locator_value));
         boolean multiple_Selected_dropDown = drp.isMultiple();
@@ -390,7 +390,7 @@ public class Element {
         }
     }
 
-    public void Select_options_From_Dropdown_By_value(String locator_value,String value)
+    public void select_options_from_dropdown_by_value(String locator_value,String value)
     {
         Select drp = new Select(find(locator_value));
         drp.selectByValue(value);
@@ -398,7 +398,7 @@ public class Element {
 
     }
 
-    public void Select_options_From_Dropdown_By_Index(String locator_value,int index)
+    public void select_options_from_dropdown_by_index(String locator_value,int index)
     {
         Select drp = new Select(find(locator_value));
         drp.selectByIndex(index);
@@ -406,7 +406,7 @@ public class Element {
 
     }
 
-    public void Select_options_From_Dropdown_By_VisibleText(String locator_value,String visibleText)
+    public void select_options_from_dropdown_by_visibleText(String locator_value,String visibleText)
     {
         Select drp = new Select(find(locator_value));
         drp.selectByVisibleText(visibleText);
@@ -414,7 +414,7 @@ public class Element {
 
     }
 
-    public void DeSelect_AllOptions_From_dropDown(String locator_value)
+    public void deSelect_allOptions_from_dropDown(String locator_value)
     {
         Select drp = new Select(find(locator_value));
         boolean multiple_Selected_dropDown = drp.isMultiple();
@@ -428,30 +428,29 @@ public class Element {
 
     }
 
-    public void DeSelect_options_From_DropDown_Using_Index(String locator_value,int index)
+    public void deSelect_options_from_dropDown_using_index(String locator_value,int index)
     {
         Select drp = new Select(find(locator_value));
         drp.deselectByIndex(index);
         logs.test_step("INFO : De-Select "+index+" From Dropdown");
     }
 
-    public void DeSelect_options_From_DropDown_Using_Value(String locator_value,String value)
+    public void deSelect_options_from_dropDown_using_value(String locator_value,String value)
     {
         Select drp = new Select(find(locator_value));
         drp.deselectByValue(value);
         logs.test_step("INFO : De-Select "+value+" From Dropdown");
     }
 
-    public void DeSelect_options_From_DropDown_Using_Visible_Text(String locator_value,String text)
+    public void deSelect_options_from_dropDown_using_visible_text(String locator_value,String text)
     {
         Select drp = new Select(find(locator_value));
         drp.deselectByVisibleText(text);
         logs.test_step("INFO : De-Select "+text+" From Dropdown");
     }
 
-    public void Get_All_Selected_Options_From_DropDown(String locator_value){
+    public void get_all_selected_options_from_dropDown(String locator_value){
         Select drp = new Select(find(locator_value));
-        drp.selectByIndex(2);
         List<WebElement> AllOptions = drp.getAllSelectedOptions();
         for(WebElement option:AllOptions)
         {
