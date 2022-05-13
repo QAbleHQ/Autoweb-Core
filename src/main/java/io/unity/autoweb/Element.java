@@ -3,15 +3,36 @@ package io.unity.autoweb;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.pagefactory.AndroidBy;
+import com.google.common.net.MediaType;
+
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.NetworkInterceptor;
+import org.openqa.selenium.devtools.v85.log.Log;
+import org.openqa.selenium.remote.http.HttpResponse;
+import org.openqa.selenium.remote.http.Route;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
+import static org.openqa.selenium.remote.http.Contents.utf8String;
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
+
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Reporter;
+
 
 public class Element {
 
@@ -59,7 +80,7 @@ public class Element {
             case "accessibility-id":
                 element = driver.findElement(new AppiumBy.ByAccessibilityId(locator_to_find[1]));
             default:
-                System.err.println("Incorrect Locator Type");
+                logs.test_step("Incorrect Locator Type");
         }
 
         return element;
@@ -99,7 +120,7 @@ public class Element {
                 elements = driver.findElements(By.tagName(locator_to_find[1]));
                 break;
             default:
-                System.err.println("Incorrect Locator Type");
+                logs.test_step("Incorrect Locator Type");
         }
 
         return elements;
@@ -140,7 +161,7 @@ public class Element {
                 elements = main.findElements(By.tagName(locator_to_find[1]));
                 break;
             default:
-                System.err.println("Incorrect Locator Type");
+                logs.test_step("Incorrect Locator Type");
         }
 
 
@@ -180,7 +201,7 @@ public class Element {
                 element = main.findElement(By.tagName(locator_to_find[1]));
                 break;
             default:
-                System.err.println("Incorrect Locator Type");
+                logs.test_step("Incorrect Locator Type");
         }
 
         return element;
@@ -242,22 +263,23 @@ public class Element {
         try {
             logs.test_step("Click on " + element);
             if (element.isEnabled() && element.isDisplayed()) {
-                //  System.out.println("Clicking on element with using java script click");
+                logs.test_step("Clicking on element with using java script click");
 
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
             } else {
-                //          System.out.println("Unable to click on element");
+                logs.test_step("Unable to click on element");
             }
         } catch (StaleElementReferenceException e) {
-            //        System.out.println("Element is not attached to the page document " + e.getStackTrace());
+            logs.test_step("Element is not attached to the page document " + e.getStackTrace());
         } catch (NoSuchElementException e) {
-            //      System.out.println("Element was not found in DOM " + e.getStackTrace());
+            logs.test_step("Element was not found in DOM " + e.getStackTrace());
         } catch (Exception e) {
-            //        System.out.println("Unable to click on element " + e.getStackTrace());
+            logs.test_step("Unable to click on element " + e.getStackTrace());
         }
     }
 
     public void take_element_screen_shot(WebElement element, String image_name) {
+
         File scrFile = element.getScreenshotAs(OutputType.FILE);
         try {
             File screenshot_file = new File("./" + image_name + ".png");
@@ -267,5 +289,179 @@ public class Element {
             e.printStackTrace();
         }
     }
+
+    public void network_interception_Method(WebDriver driver)
+    {
+         /* 1. If you want to capture network events coming into the browser
+            2. and you want to manipulate them you are able to do it with the following examples.*/
+
+        try(NetworkInterceptor interceptor = new NetworkInterceptor(
+                driver,
+                Route.matching(req -> true)
+                        .to(() -> req -> new HttpResponse()
+                                .setStatus(200)
+                                .addHeader("Content-Type", MediaType.HTML_UTF_8.toString())
+                                .setStatus(200)
+                                .setContent(utf8String("Creamy, delicious cheese!"))));)
+        {
+            logs.test_step("INFO : Network Interceptor is executed..");
+        }
+        catch(Exception e)
+        {
+            logs.test_step("INFO : "+e.getStackTrace());
+        }
+
+    }
+
+    public void jsException_method( ChromeDriver driver,String locator_value)
+    {
+        //Usage Of This method :
+        //Listen to the JS Exceptions and register callbacks to process the exception details.
+
+        DevTools devTools = driver.getDevTools();
+        devTools.createSession();
+
+       ((ChromeDriver) driver).getDevTools().createSession();
+
+        List<JavascriptException> jsExceptionsList = new ArrayList<>();
+        Consumer<JavascriptException> addEntry = jsExceptionsList::add;
+        devTools.getDomains().events().addJavascriptExceptionListener(addEntry);
+
+        WebElement link2click = find(locator_value);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);",
+                link2click, "onclick", "throw new Error('Hello, world!')");
+        link2click.click();
+
+        for (JavascriptException jsException : jsExceptionsList) {
+            logs.test_step("JS exception message: " + jsException.getMessage());
+            logs.test_step("JS exception system information: " + jsException.getSystemInformation());
+            logs.test_step("JS exception Get cause : " + jsException.getCause());
+            logs.test_step("JS exception get Build Information: " + jsException.getBuildInformation());
+            logs.test_step("JS exception Get full stack trace : " + jsException.fillInStackTrace());
+            logs.test_step("JS exception get raw Message : " + jsException.getRawMessage());
+
+            jsException.printStackTrace();
+        }
+    }
+
+    public void console_Log_method(ChromeDriver driver)
+    {
+        DevTools devTools = driver.getDevTools();
+        devTools.createSession();
+        devTools.getCdpSession();
+        devTools.send(Log.enable());
+        devTools.addListener(Log.entryAdded(),
+                logEntry -> {
+                    logs.test_step("INFO : log      : "+logEntry.getText());
+                    logs.test_step("INFO : level    : "+logEntry.getLevel());
+                    logs.test_step("INFO : Time     : "+logEntry.getTimestamp());
+                    logs.test_step("INFO : URL      : "+logEntry.getUrl());
+                    logs.test_step("INFO : WorkerID : "+logEntry.getWorkerId());
+
+                });
+
+    }
+
+    public void select_single_option_from_dropdown(String locator_value,String Value)
+    {
+        Select drp = new Select(find(locator_value));
+        List<WebElement> options = drp.getOptions();
+        for (WebElement option:options)
+        {
+            if(option.getText().equals(Value))
+            {
+                option.click();
+                break;
+            }
+            logs.test_step("INFO : "+Value+" is selected.");
+        }
+    }
+
+    public void select_all_options_options_from_dropDown(String locator_value)
+    {
+        Select drp = new Select(find(locator_value));
+        boolean multiple_Selected_dropDown = drp.isMultiple();
+        List<WebElement> options = drp.getOptions();
+        if (multiple_Selected_dropDown == true)
+        {
+            for (WebElement option : options)
+            {
+                option.click();
+            }
+            logs.test_step("INFO : All options are Selected..");
+        }else
+        {
+            logs.test_step("INFO : This Dropdown is not a multiSelected DropDown.");
+        }
+    }
+
+    public void select_options_from_dropdown_by_value(String locator_value,String value)
+    {
+        Select drp = new Select(find(locator_value));
+        drp.selectByValue(value);
+        logs.test_step("INFO : Select "+value+" From Dropdown");
+
+    }
+
+    public void select_options_from_dropdown_by_index(String locator_value,int index)
+    {
+        Select drp = new Select(find(locator_value));
+        drp.selectByIndex(index);
+        logs.test_step("INFO : Select "+index+" Index From Dropdown");
+
+    }
+
+    public void select_options_from_dropdown_by_visibleText(String locator_value,String visibleText)
+    {
+        Select drp = new Select(find(locator_value));
+        drp.selectByVisibleText(visibleText);
+        logs.test_step("INFO : Select "+visibleText+" From Dropdown");
+
+    }
+
+    public void deSelect_allOptions_from_dropDown(String locator_value)
+    {
+        Select drp = new Select(find(locator_value));
+        boolean multiple_Selected_dropDown = drp.isMultiple();
+        if (multiple_Selected_dropDown == true) {
+            drp.deselectAll();
+            logs.test_step("INFO : All options are DeSelected..");
+        } else
+        {
+            logs.test_step("INFO : This Dropdown is not a multiSelected DropDown.");
+        }
+
+    }
+
+    public void deSelect_options_from_dropDown_using_index(String locator_value,int index)
+    {
+        Select drp = new Select(find(locator_value));
+        drp.deselectByIndex(index);
+        logs.test_step("INFO : De-Select "+index+" From Dropdown");
+    }
+
+    public void deSelect_options_from_dropDown_using_value(String locator_value,String value)
+    {
+        Select drp = new Select(find(locator_value));
+        drp.deselectByValue(value);
+        logs.test_step("INFO : De-Select "+value+" From Dropdown");
+    }
+
+    public void deSelect_options_from_dropDown_using_visible_text(String locator_value,String text)
+    {
+        Select drp = new Select(find(locator_value));
+        drp.deselectByVisibleText(text);
+        logs.test_step("INFO : De-Select "+text+" From Dropdown");
+    }
+
+    public void get_all_selected_options_from_dropDown(String locator_value){
+        Select drp = new Select(find(locator_value));
+        List<WebElement> AllOptions = drp.getAllSelectedOptions();
+        for(WebElement option:AllOptions)
+        {
+            logs.test_step("INFO : Selected Options are : "+option.getText());
+        }
+    }
+
 
 }

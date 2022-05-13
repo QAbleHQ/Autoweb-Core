@@ -1,10 +1,16 @@
 package io.unity.autoweb;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.function.Function;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class Wait {
 
@@ -53,7 +59,31 @@ public class Wait {
             Thread.sleep((long)second * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Thread.currentThread().interrupt();
 
         }
     }
+
+    public void implicit_wait_for_page(WebDriver driver)
+    {
+        driver.manage().timeouts().implicitlyWait(10, SECONDS);
+    }
+
+    public void fluent_wait_method_for_element(String locator_value,int TimeoutTime,int PollingTime)
+    {
+        FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+                .withTimeout(Duration.ofSeconds(TimeoutTime))
+                .pollingEvery(Duration.ofSeconds(PollingTime))
+                .ignoring(Exception.class);
+
+        WebElement element2 = wait.until(new Function<WebDriver, WebElement>() {
+            public WebElement apply(WebDriver driver) {
+                WebElement element2 = element.find(locator_value);
+                return element2;
+            }
+        });
+        element2.click();
+    }
+
+
 }
