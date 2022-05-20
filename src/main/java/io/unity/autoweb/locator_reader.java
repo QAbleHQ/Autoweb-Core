@@ -56,7 +56,7 @@ public class locator_reader {
         JSONObject object = null;
         String locator_value = null;
         try {
-            object = reader.get_locator_object(locator_name);
+            object = reader.get_locator_object(locator_name, getPlatform());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -75,9 +75,14 @@ public class locator_reader {
         return locator_value;
     }
 
-    public JSONObject get_locator_object(String locator_object_name) throws Exception {
+    public JSONObject get_locator_object(String locator_object_name, String platform) throws Exception {
+        File file = null;
+        if (platform.equals("web")) {
+            file = new File("src/test/java/web/object_repository/");
 
-        File file = new File("src/test/java/web/object_repository/");
+        } else if (platform.equals("mobile")) {
+            file = new File("src/test/java/mobile/object_repository/");
+        }
 
         JSONObject object = null;
         try {
