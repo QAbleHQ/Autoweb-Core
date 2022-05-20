@@ -80,7 +80,7 @@ public class locator_reader {
         if (platform.equals("web")) {
             file = new File("src/test/java/web/object_repository/");
 
-        } else if (platform.equals("mobile")) {
+        } else if (platform.equals("android") || platform.equals("android") ) {
             file = new File("src/test/java/mobile/object_repository/");
         }
 
