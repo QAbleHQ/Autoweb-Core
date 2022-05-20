@@ -5,12 +5,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class locator_reader {
 
@@ -75,38 +77,57 @@ public class locator_reader {
         return locator_value;
     }
 
+
+    public List<String> look_for_locator_json_file(String folder_path) {
+        File dir = new File(folder_path);
+
+        FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File f, String name) {
+                return name.endsWith(".json");
+            }
+        };
+
+        List<String> result = null;
+        try (Stream<Path> walk = Files.walk(Paths.get(folder_path))) {
+            // We want to find only regular files
+            result = walk.filter(Files::isRegularFile).filter(p -> p.getFileName().toString().endsWith(".json"))
+                    .map(x -> x.toString()).collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
     public JSONObject get_locator_object(String locator_object_name, String platform) throws Exception {
         File file = null;
         if (platform.equals("web")) {
             file = new File("src/test/java/web/object_repository/");
 
-        } else if (platform.equals("android") || platform.equals("android") ) {
+        } else if (platform.equalsIgnoreCase("android") || platform.equalsIgnoreCase("iOS")) {
             file = new File("src/test/java/mobile/object_repository/");
         }
 
         JSONObject object = null;
         try {
-            List<File> files = Files.list(Paths.get(file.getAbsolutePath()))
-                    .map(Path::toFile)
-                    .collect(Collectors.toList());
+
+            List<String> files = look_for_locator_json_file(file.getAbsolutePath());
+
+
             for (int i = 0; i < files.size(); i++) {
 
-                List<File> folderFiles = Files.list(Paths.get(files.get(i).toString()))
-                        .map(Path::toFile)
-                        .collect(Collectors.toList());
-
-                for (int j = 0; j < folderFiles.size(); j++) {
-
-                    object = read_locator_file_and_get_object(folderFiles.get(j).toString(), locator_object_name);
-                    if (object != null) {
-                        break;
-                    }
+                object = read_locator_file_and_get_object(files.get(i).toString(), locator_object_name);
+                if (object != null) {
+                    break;
                 }
+
+
                 if (object != null) {
                     break;
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             // Error while reading the directory
             e.printStackTrace();
         }
